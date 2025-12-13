@@ -10,6 +10,7 @@
   },
   "dependencies": {
     "next": "16.0.10",
+    "onnxruntime-web": "^1.23.2",
     "react": "19.2.1",
     "react-dom": "19.2.1"
   },

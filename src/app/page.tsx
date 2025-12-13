@@ -1,10 +1,11 @@
 import Benchmark from "./components/benchmark";
-import ONNXExample from "./components/example";
+import RealEstateEnhancer from "./components/realEstate";
 
 export default function Home() {
   return (
     <main>
-      <ONNXExample />
+      {/*<ONNXExample />*/}
+      <RealEstateEnhancer />
       <Benchmark />
     </main>
   );

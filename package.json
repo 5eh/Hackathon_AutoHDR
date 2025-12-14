@@ -4,7 +4,7 @@
   "private": true,
   "scripts": {
     "dev": "npm run setup-onnx && next dev --webpack",
-    "build": "npm run setup-onnx && next build",
+    "build": "npm run setup-onnx && next build --webpack",
     "start": "next start",
     "lint": "eslint",
     "setup-onnx": "node setup-onnx.js"

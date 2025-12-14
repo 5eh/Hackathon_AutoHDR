@@ -62,8 +62,9 @@ interface State {
   gridType: string;
 }
 
+// FIXED TS2411: Added '| undefined' to the index signature
 interface UniformLocations {
-  [key: string]: WebGLUniformLocation | null;
+  [key: string]: WebGLUniformLocation | null | undefined;
   u_hsl_h?: WebGLUniformLocation | null;
   u_hsl_s?: WebGLUniformLocation | null;
   u_hsl_l?: WebGLUniformLocation | null;
@@ -283,7 +284,8 @@ export default function AutoHDRStudio() {
 
   const uniformLocsRef = useRef<UniformLocations>({});
   const imgAspectRef = useRef(1);
-  const animationFrameRef = useRef<number>();
+  // FIXED TS2554: Initialized with 'undefined'
+  const animationFrameRef = useRef<number | undefined>(undefined);
 
   // Store the original image data URL to re-run AI processing
   const originalImageSrcRef = useRef<string | null>(null);
@@ -700,7 +702,12 @@ export default function AutoHDRStudio() {
     // Bind the active texture to TEXTURE0
     gl.activeTexture(gl.TEXTURE0);
     gl.bindTexture(gl.TEXTURE_2D, activeTexture);
-    gl.uniform1i(uniformLocsRef.current.u_image, 0);
+
+    // FIXED TS2345: Uniform check
+    const uImageLoc = uniformLocsRef.current.u_image;
+    if (uImageLoc !== undefined) {
+      gl.uniform1i(uImageLoc, 0);
+    }
 
     const viewAR = canvas.width / canvas.height;
     const angle = (state.rotate * Math.PI) / 180;
@@ -714,8 +721,8 @@ export default function AutoHDRStudio() {
     ];
 
     const poly = vCorners.map((corner) => {
-      let x = corner.x * imgAspectRef.current;
-      let y = corner.y;
+      const x = corner.x * imgAspectRef.current;
+      const y = corner.y;
 
       const rx = x * Math.cos(angle) - y * Math.sin(angle);
       const ry = x * Math.sin(angle) + y * Math.cos(angle);
@@ -764,28 +771,58 @@ export default function AutoHDRStudio() {
 
     // Set uniforms
     const locs = uniformLocsRef.current;
-    gl.uniform1f(locs.u_imgAspect, imgAspectRef.current);
-    gl.uniform1f(locs.u_viewAspect, viewAR);
-    gl.uniform1f(locs.u_rotate, angle);
-    gl.uniform1f(locs.u_scale, finalScale);
-    gl.uniform2f(locs.u_perspective, state.perspectiveX, state.perspectiveY);
-    gl.uniform2f(locs.u_resolution, canvas.width, canvas.height);
-    gl.uniform1f(locs.u_exposure, state.exposure);
-    gl.uniform1f(locs.u_contrast, state.contrast);
-    gl.uniform1f(locs.u_highlights, state.highlights);
-    gl.uniform1f(locs.u_shadows, state.shadows);
-    gl.uniform1f(locs.u_whites, state.whites);
-    gl.uniform1f(locs.u_blacks, state.blacks);
-    gl.uniform1f(locs.u_temp, state.temp);
-    gl.uniform1f(locs.u_tint, state.tint);
-    gl.uniform1f(locs.u_saturation, state.saturation);
-    gl.uniform1f(locs.u_vibrance, state.vibrance);
-    gl.uniform1fv(locs.u_hsl_h, state.hsl.h);
-    gl.uniform1fv(locs.u_hsl_s, state.hsl.s);
-    gl.uniform1fv(locs.u_hsl_l, state.hsl.l);
-    gl.uniform1f(locs.u_distortion, state.distortion);
-    gl.uniform1f(locs.u_vignette, state.vignette);
-    gl.uniform1f(locs.u_vignetteMid, state.vignetteMid);
+
+    // Helper function for safe uniform setting
+    const setUniform1f = (name: keyof UniformLocations, value: number) => {
+      const loc = locs[name];
+      if (loc !== undefined) {
+        gl.uniform1f(loc, value);
+      }
+    };
+
+    const setUniform2f = (
+      name: keyof UniformLocations,
+      v1: number,
+      v2: number,
+    ) => {
+      const loc = locs[name];
+      if (loc !== undefined) {
+        gl.uniform2f(loc, v1, v2);
+      }
+    };
+
+    const setUniform1fv = (name: keyof UniformLocations, value: number[]) => {
+      const loc = locs[name];
+      if (loc !== undefined) {
+        gl.uniform1fv(loc, value);
+      }
+    };
+
+    setUniform1f("u_imgAspect", imgAspectRef.current);
+    setUniform1f("u_viewAspect", viewAR);
+    setUniform1f("u_rotate", angle);
+    setUniform1f("u_scale", finalScale);
+    setUniform2f("u_perspective", state.perspectiveX, state.perspectiveY);
+    setUniform2f("u_resolution", canvas.width, canvas.height);
+    setUniform1f("u_exposure", state.exposure);
+    setUniform1f("u_contrast", state.contrast);
+    setUniform1f("u_highlights", state.highlights);
+    setUniform1f("u_shadows", state.shadows);
+    setUniform1f("u_whites", state.whites);
+    setUniform1f("u_blacks", state.blacks);
+    setUniform1f("u_temp", state.temp);
+    setUniform1f("u_tint", state.tint);
+    setUniform1f("u_saturation", state.saturation);
+    setUniform1f("u_vibrance", state.vibrance);
+
+    // Fixed TS2345/Removed @ts-nocheck for HSL arrays
+    setUniform1fv("u_hsl_h", state.hsl.h);
+    setUniform1fv("u_hsl_s", state.hsl.s);
+    setUniform1fv("u_hsl_l", state.hsl.l);
+
+    setUniform1f("u_distortion", state.distortion);
+    setUniform1f("u_vignette", state.vignette);
+    setUniform1f("u_vignetteMid", state.vignetteMid);
 
     gl.drawArrays(gl.TRIANGLE_FAN, 0, 4);
 
@@ -847,6 +884,11 @@ export default function AutoHDRStudio() {
 
   const animate = useCallback(() => {
     render();
+
+    // Check if ref is defined before passing to requestAnimationFrame
+    if (animationFrameRef.current !== undefined) {
+      cancelAnimationFrame(animationFrameRef.current);
+    }
     animationFrameRef.current = requestAnimationFrame(animate);
   }, [render]);
 

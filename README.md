@@ -1,4 +1,8 @@
-## Readme
+## README
+
+It is important to note that this markdown has been made for the personal AI training model that Thomas and Watson have completed, not necessarily the runtime functionality of this code.
+
+We are currently testing and improving the epoch mechanisms.
 
 This repository allows for privatized AI real estate photographer generation to occur effectively. Check Google Drive on personal email for being able to download and run. It should work I guess. Just make sure you use a `python` environment. Install the latest dependencies.
 

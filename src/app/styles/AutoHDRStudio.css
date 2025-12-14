@@ -1,0 +1,265 @@
+/* Custom scrollbar styles */
+.custom-scrollbar::-webkit-scrollbar {
+    width: 6px;
+}
+
+.custom-scrollbar::-webkit-scrollbar-track {
+    background: #0f0f0f;
+}
+
+.custom-scrollbar::-webkit-scrollbar-thumb {
+    background: #333;
+    border-radius: 3px;
+}
+
+.custom-scrollbar::-webkit-scrollbar-thumb:hover {
+    background: #444;
+}
+
+/* Custom range input styling */
+input[type="range"] {
+    -webkit-appearance: none;
+    appearance: none;
+    background: transparent;
+    cursor: pointer;
+}
+
+input[type="range"]:focus {
+    outline: none;
+}
+
+/* Track styling */
+input[type="range"]::-webkit-slider-runnable-track {
+    width: 100%;
+    height: 2px;
+    cursor: pointer;
+    background: #404040;
+    border-radius: 1px;
+}
+
+input[type="range"]::-moz-range-track {
+    width: 100%;
+    height: 2px;
+    cursor: pointer;
+    background: #404040;
+    border-radius: 1px;
+}
+
+/* Thumb styling */
+input[type="range"]::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    appearance: none;
+    height: 12px;
+    width: 12px;
+    border-radius: 50%;
+    background: #a0a0a0;
+    cursor: pointer;
+    margin-top: -5px;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.5);
+    transition:
+        transform 0.1s,
+        background-color 0.1s;
+}
+
+input[type="range"]::-moz-range-thumb {
+    border: none;
+    height: 12px;
+    width: 12px;
+    border-radius: 50%;
+    background: #a0a0a0;
+    cursor: pointer;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.5);
+    transition:
+        transform 0.1s,
+        background-color 0.1s;
+}
+
+input[type="range"]::-webkit-slider-thumb:hover {
+    background: #fff;
+    transform: scale(1.1);
+}
+
+input[type="range"]::-moz-range-thumb:hover {
+    background: #fff;
+    transform: scale(1.1);
+}
+
+/* Special slider track backgrounds - IMPORTANT: These need !important to override the inline styles */
+.slider-temp::-webkit-slider-runnable-track {
+    background: linear-gradient(to right, #3b82f6, #888, #fbbf24) !important;
+    height: 2px;
+}
+
+.slider-temp::-moz-range-track {
+    background: linear-gradient(to right, #3b82f6, #888, #fbbf24) !important;
+    height: 2px;
+}
+
+.slider-tint::-webkit-slider-runnable-track {
+    background: linear-gradient(to right, #22c55e, #888, #d946ef) !important;
+    height: 2px;
+}
+
+.slider-tint::-moz-range-track {
+    background: linear-gradient(to right, #22c55e, #888, #d946ef) !important;
+    height: 2px;
+}
+
+.slider-sat::-webkit-slider-runnable-track {
+    background: linear-gradient(to right, #444, #f00) !important;
+    height: 2px;
+}
+
+.slider-sat::-moz-range-track {
+    background: linear-gradient(to right, #444, #f00) !important;
+    height: 2px;
+}
+
+.slider-hue::-webkit-slider-runnable-track {
+    background: linear-gradient(
+        to right,
+        #f00,
+        #ff0,
+        #0f0,
+        #0ff,
+        #00f,
+        #f0f,
+        #f00
+    ) !important;
+    height: 2px;
+}
+
+.slider-hue::-moz-range-track {
+    background: linear-gradient(
+        to right,
+        #f00,
+        #ff0,
+        #0f0,
+        #0ff,
+        #00f,
+        #f0f,
+        #f00
+    ) !important;
+    height: 2px;
+}
+
+/* Scrollbar container fix */
+.overflow-y-auto::-webkit-scrollbar {
+    width: 6px;
+}
+
+.overflow-y-auto::-webkit-scrollbar-track {
+    background: #0f0f0f;
+}
+
+.overflow-y-auto::-webkit-scrollbar-thumb {
+    background: #333;
+    border-radius: 3px;
+}
+
+.overflow-y-auto::-webkit-scrollbar-thumb:hover {
+    background: #444;
+}
+
+/* Viewport checkerboard background */
+.viewport-background {
+    background-color: #000;
+    position: relative;
+}
+
+.viewport-background::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+    opacity: 0.15;
+    background-image:
+        linear-gradient(45deg, #222 25%, transparent 25%),
+        linear-gradient(-45deg, #222 25%, transparent 25%),
+        linear-gradient(45deg, transparent 75%, #222 75%),
+        linear-gradient(-45deg, transparent 75%, #222 75%);
+    background-size: 20px 20px;
+    background-position:
+        0 0,
+        0 10px,
+        10px -10px,
+        -10px 0px;
+    pointer-events: none;
+}
+
+/* Hover transitions for buttons */
+.btn-transition {
+    transition:
+        background-color 0.2s,
+        color 0.2s,
+        transform 0.1s,
+        border-color 0.2s;
+}
+
+.btn-transition:active {
+    transform: scale(0.98);
+}
+
+/* Custom focus states */
+.focus-visible:focus {
+    outline: 2px solid #3b82f6;
+    outline-offset: 2px;
+}
+
+/* Prevent text selection */
+.no-select {
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+}
+
+/* Animation for loading spinner */
+@keyframes spin {
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+.animate-spin {
+    animation: spin 1s linear infinite;
+}
+
+/* Grid overlay patterns */
+.grid-overlay {
+    pointer-events: none;
+    position: absolute;
+    inset: 0;
+    z-index: 50;
+}
+
+/* Toast animation */
+@keyframes slideIn {
+    from {
+        transform: translateY(-150%);
+        opacity: 0;
+    }
+    to {
+        transform: translateY(0);
+        opacity: 1;
+    }
+}
+
+@keyframes slideOut {
+    from {
+        transform: translateY(0);
+        opacity: 1;
+    }
+    to {
+        transform: translateY(-150%);
+        opacity: 0;
+    }
+}
+
+.toast-enter {
+    animation: slideIn 0.3s ease-out;
+}
+
+.toast-exit {
+    animation: slideOut 0.3s ease-in;
+}

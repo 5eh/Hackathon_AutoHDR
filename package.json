@@ -3,12 +3,14 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "dev": "next dev",
-    "build": "next build",
+    "dev": "npm run setup-onnx && next dev",
+    "build": "npm run setup-onnx && next build",
     "start": "next start",
-    "lint": "eslint"
+    "lint": "eslint",
+    "setup-onnx": "node setup-onnx.js"
   },
   "dependencies": {
+    "lucide-react": "^0.561.0",
     "next": "16.0.10",
     "onnxruntime-web": "^1.23.2",
     "react": "19.2.1",

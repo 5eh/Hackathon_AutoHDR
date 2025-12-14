@@ -1,10 +1,6 @@
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
-  // Minimal config - let Turbopack handle most things automatically
-  turbopack: {},
-
-  // Allow loading .onnx files from public directory
   async headers() {
     return [
       {
@@ -21,6 +17,10 @@ const nextConfig: NextConfig = {
         ],
       },
     ];
+  },
+  // Add this for external data files
+  experimental: {
+    serverComponentsExternalPackages: ["onnxruntime-web"],
   },
 };
 

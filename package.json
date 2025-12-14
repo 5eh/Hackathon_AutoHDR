@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "dev": "npm run setup-onnx && next dev",
+    "dev": "npm run setup-onnx && next dev --webpack",
     "build": "npm run setup-onnx && next build",
     "start": "next start",
     "lint": "eslint",

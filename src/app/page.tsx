@@ -262,12 +262,11 @@ export default function Home() {
 
   const [aiSession, setAiSession] = useState<ort.InferenceSession | null>(null);
   const [isAiProcessing, setIsAiProcessing] = useState(false);
-  const [enhancementStrength, setEnhancementStrength] = useState(0.5);
+  const [enhancementStrength, setEnhancementStrength] = useState(0.15);
   const [activeImageSource, setActiveImageSource] = useState<
     "original" | "enhanced"
-  >("original"); // Which texture to apply edits to
+  >("original");
 
-  // Refs
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const overlayCanvasRef = useRef<HTMLCanvasElement>(null);
   const histogramCanvasRef = useRef<HTMLCanvasElement>(null);
@@ -1372,14 +1371,14 @@ export default function Home() {
         </div>
 
         {/* Tab Content */}
-        <div className="flex-1 overflow-y-auto p-5">
+        <div className="flex-1 overflow-y-auto p-3">
           {activeTab === "basic" && (
             <div>
               {/* AI/Enhancement Strength Control */}
-              <div className="mb-6 p-3 bg-neutral-900 rounded border border-neutral-800">
+              <div className="mb-2 p-3 bg-neutral-900 rounded border border-neutral-800">
                 <div className="flex items-center justify-between mb-2">
                   <p className="text-[10px] font-bold text-white tracking-widest">
-                    <Wand2 size={14} className="inline mr-2 text-yellow-500" />
+                    <Wand2 size={14} className="inline mr-2 text-blue-500" />
                     AI ENHANCEMENT
                   </p>
                   {isAiProcessing && (
@@ -1423,6 +1422,7 @@ export default function Home() {
                 step={0.01}
                 onChange={(v) => handleSliderChange("exposure", v)}
                 onChangeEnd={saveState}
+                className=""
               />
 
               <ControlSlider
@@ -1755,24 +1755,22 @@ export default function Home() {
         <div className="absolute top-4 left-4 z-50 flex items-center gap-4">
           <div className="relative">
             <button
-              onMouseEnter={() => setShowGridMenu(true)}
-              onMouseLeave={() => setShowGridMenu(false)}
-              className="w-10 h-10 rounded-full bg-black/80 border border-white/20 flex items-center justify-center hover:w-28 transition-all duration-300 overflow-hidden"
+              onClick={() => setShowGridMenu((prev) => !prev)}
+              className="w-10 h-10 rounded-full bg-black/80 border border-white/20 flex items-center justify-center group hover:w-28 transition-all duration-300 overflow-hidden relative" // Added 'group' and 'relative'
             >
-              <div className="w-10 h-10 flex items-center justify-center shrink-0">
+              {/* The icon is visible when not hovered (opacity 1) */}
+              <div className="absolute left-0 top-0 w-10 h-10 flex items-center justify-center shrink-0 opacity-100 group-hover:opacity-0 transition-opacity">
                 <Grid3x3 size={16} className="text-white" />
               </div>
-              <span className="text-white text-[10px] font-bold tracking-widest pr-3 opacity-0 hover:opacity-100 transition-opacity">
+
+              {/* The text is visible when hovered (opacity 1) */}
+              <span className="text-white text-[10px] font-bold tracking-widest px-3 opacity-0 group-hover:opacity-100 transition-opacity">
                 GUIDES
               </span>
             </button>
 
             {showGridMenu && (
-              <div
-                onMouseEnter={() => setShowGridMenu(true)}
-                onMouseLeave={() => setShowGridMenu(false)}
-                className="absolute top-12 left-0 w-56 bg-[#0a0a0a]/95 backdrop-blur-md border border-[#333] rounded-lg p-1.5 shadow-2xl"
-              >
+              <div className="absolute top-12 left-0 w-56 bg-[#0a0a0a]/95 backdrop-blur-md border border-[#333] rounded-lg p-1.5 shadow-2xl">
                 {gridOptions.map((option, i) => {
                   if ("header" in option) {
                     return (
@@ -1901,7 +1899,7 @@ function ControlSlider({
   suffix = "",
 }: ControlSliderProps) {
   return (
-    <div className="mb-3.5">
+    <div className="mb-1">
       <div className="flex justify-between items-center mb-1.5 text-[10px] font-semibold tracking-wider text-gray-400">
         <div className="flex items-center gap-2">
           {icon}

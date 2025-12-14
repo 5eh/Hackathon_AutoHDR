@@ -1,27 +1,36 @@
-development of User flow:
+## Readme
 
-- Check benchmark
-- Compare functionality
-- If compatible, then allow for user image input
-  Once the image is input, backend runs ONNX to receive the compare the image
-- The review of the image is solely to compare the quality or consistency of the mages
+This repository allows for privatized AI real estate photographer generation to occur effectively. Check Google Drive on personal email for being able to download and run. It should work I guess. Just make sure you use a `python` environment. Install the latest dependencies.
 
-Notes:
+### KEY NOTES
 
-- If this is done in a folder, it can be imported collectively and trained collectively.Maybe 1 free "site" per free user, then $200/month after that i they like it, with functional tweaking.
-- The user may wnt to self select using a tool
-- The ONNX machine will want to review eah sectio
+This is the documentation necessary for being able to:
 
-NICE TO HAVE, BUT NOT NEEDED:
+1. Check latest epoch
+2. Go to ~/LUTwithBGrid location
+3. Run and deploy the latest model with the test data
+4. See results in real time
 
-- 3D Depth
-  Property layout
-  Review and improvement model
+```
+find ~/LUTwithBGrid -name "_182_" -name "\*.pth"
 
-THINGS TO DO:
+for img in ~/Downloads/hackathon_validation/\*\_src.jpg; do
+filename=$(basename "$img" \_src.jpg)
+echo "Processing $filename with epoch 182..."
+    python demo.py --input_path "$img" --output_path ~/LUTwithBGrid/watson_results/"${filename}\_epoch182.jpg" --pretrained_path saved_models/Bilateral_LUTs_sRGB/bilateral_lut_182.pth
+done
 
-- Build ONNX Model
-- Add layers to images
-- Have an image be able to auto select the products inside of a room
-- Create key-pair comparisons
-- Allow the AI model to create image changes only to a specific area
+mkdir -p ~/LUTwithBGrid/watson_results/epoch_182
+mv ~/LUTwithBGrid/watson_results/\*\_epoch182.jpg ~/LUTwithBGrid/watson_results/epoch_182/
+
+cd ~/LUTwithBGrid/watson_results/
+zip -r epoch_182.zip epoch_182/
+
+ls -la epoch_182.zip
+```
+
+Demo run functionality:
+
+```
+python demo.py --input_path ~/Downloads/hackathon_validation/10001_src.jpg --output_path ~/LUTwithBGrid/watson_results/10001_enhanced.jpg --pretrained_path pretrained/FiveK_sRGB.pth
+```
